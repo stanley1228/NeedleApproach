@@ -1,41 +1,49 @@
 import numpy as np
 import cv2
 
-#架好攝影機，調焦
-#把進給的地方包起來 or 利用去背景 將針點明顯化
-#光流
+#?[?n???v????A???J
+#?±??i?????a???]?X_?? or ?±Q???h?I?? ??N?Xw?I??????
+#???y
 
 #harris corner
 
-filename = 'Needle2.jpg'
-img = cv2.imread(filename)
-print(img.shape)
+cap = cv2.VideoCapture(0)
+while(True):
+    ret, img = cap.read()
 
-cv2.namedWindow('Needle')
-cv2.imshow("Needle",img)
+    print(img.shape)
+    #filename = 'Needle2.jpg'
+    #img = cv2.imread(filename)
+    #print(img.shape)
 
-gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+    cv2.namedWindow('Needle')
+    cv2.imshow("Needle",img)
 
-gray = np.float32(gray)
-#dst = cv2.cornerHarris(gray,2,3,0.05)
-dst = cv2.cornerHarris(gray,blockSize=2,ksize=3,k=0.05)
-#result is dilated for marking the corners, not important
-dst = cv2.dilate(dst,None)
+    gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 
-# Threshold for an optimal value, it may vary depending on the image.
-#the needle corner score is too low 
-#original is 0.01*dst.max()  now change to 0.001*dst.max() then needle can be found
-#i think it cause by the needle and the sewing machine gray part has similar color
+    gray = np.float32(gray)
+    #dst = cv2.cornerHarris(gray,2,3,0.05)
+    dst = cv2.cornerHarris(gray,blockSize=2,ksize=3,k=0.05)
+    #result is dilated for marking the corners, not important
+    #dst = cv2.dilate(dst,None)
+    kernel = np.ones((8,8), np.uint8)
+    dst = cv2.dilate(dst,kernel,iterations=1)
+
+    # Threshold for an optimal value, it may vary depending on the image.
+    #the needle corner score is too low 
+    #original is 0.01*dst.max()  now change to 0.001*dst.max() then needle can be found
+    #i think it cause by the needle and the sewing machine gray part has similar color
 
 
-img[dst>0.0001*dst.max()]=[0,0,255]  
+    img[dst>0.2*dst.max()]=[0,0,255]  
 
-cv2.imshow('harris',dst)
-cv2.imshow('dst',img)
+    cv2.imshow('harris',dst)
+    cv2.imshow('dst',img)
 
-if cv2.waitKey(0) & 0xff == 27:
-    cv2.destroyAllWindows()
- 
+    #if cv2.waitKey(0) & 0xff == 27:
+    #    cv2.destroyAllWindows()
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
 
 
 '''
@@ -60,10 +68,11 @@ if cv2.waitKey(0) & 0xff == 27:
     cv2.destroyAllWindows()
 '''
 
-'''
+
 #
 #video
 #
+'''
 cap = cv2.VideoCapture(0)
 
 while(True):
