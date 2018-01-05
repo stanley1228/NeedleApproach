@@ -1,10 +1,6 @@
 import numpy as np
 import cv2
 
-#?[?n???v????A???J
-#?????i?????a???]?X_?? or ???Q???h?I?? ??N?Xw?I??????
-#???y
-
 
 '''
 add optical flow
@@ -181,12 +177,12 @@ while(True):
         sSymbolPoint="{:.1f},{:.1f}".format(SymbolPoint[0],SymbolPoint[1])
         sNeedlePoint="{:.1f},{:.1f}".format(NeedlePoint[0],NeedlePoint[1])
         cv2.putText(match_symbol,sSymbolPoint, org=SymbolPoint,fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.5,color=(0,0,255),lineType=2)
-        cv2.putText(match_symbol,sNeedlePoint, org=NeedlePoint,fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.5,color=(0,0,255),lineType=2)
+        cv2.putText(match_symbol,sNeedlePoint, org=NeedlePoint,fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=0.5,color=(0,0,255),lineType=2) 
         cv2.putText(match_symbol,ss, org=(10,50),fontFace=cv2.FONT_HERSHEY_SIMPLEX, fontScale=1,color=(255,255,0),lineType=2)
     
     for i in FlowPoint2:
-        x,y = i.ravel()
-        cv2.circle(match_symbol,(x,y),3,255,-1)
+        x,y = i.ravel() 
+        cv2.circle(match_symbol,(x,y),3,255,-1)   
     cv2.imshow('match_symbol',match_symbol)    
     cv2.waitKey(100)
 
